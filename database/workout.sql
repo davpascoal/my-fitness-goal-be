@@ -25,7 +25,7 @@ CREATE TABLE `exercise` (
 
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-DROP TABLE IF EXISTS `exercise`;
+DROP TABLE IF EXISTS `workout_exercises`;
 
 CREATE TABLE `workout_exercises` (
     `workout_id` int(11) NOT NULL,
