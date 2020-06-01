@@ -1,19 +1,31 @@
 package com.myfitnessgoal.myfitnessgoal.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Workout {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="workout_id")
+    @Column(name = "workout_id")
     private int workoutId;
-    
+
+    @ManyToMany
+    @JoinTable(name = "workout_exercise",
+                joinColumns = { @JoinColumn(name = "workout_id")},
+                inverseJoinColumns = { @JoinColumn(name = "exercise_id") })
+    private Set<Exercise> exercises = new HashSet<>();
+
     @Column(name="title")
     private String title;
 
