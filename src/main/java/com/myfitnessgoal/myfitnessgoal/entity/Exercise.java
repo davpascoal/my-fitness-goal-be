@@ -1,12 +1,20 @@
 package com.myfitnessgoal.myfitnessgoal.entity;
 
 import java.time.Duration;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Exercise {
@@ -21,6 +29,16 @@ public class Exercise {
 
     @Column(name = "duration")
     Duration duration;
+
+    @ManyToMany(
+        fetch = FetchType.LAZY,
+        cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinTable(
+        name = "workout_exercise",
+        joinColumns = { @JoinColumn(name = "exercise_id") },
+        inverseJoinColumns = { @JoinColumn(name = "workout_id") })
+    @JsonIgnore
+    private List<Workout> workouts;
 
     public int getExerciseId() {
         return exerciseId;
@@ -46,16 +64,16 @@ public class Exercise {
         this.duration = duration;
     }
 
-    public Exercise() {}
-
-    public Exercise(String exerciseName, Duration duration) {
-        this.exerciseName = exerciseName;
-        this.duration = duration;
+    public List<Workout> getWorkouts() {
+        return workouts;
     }
 
-    @Override
-    public String toString() {
-        return "Exercise [duration=" + duration + ", exerciseId=" + exerciseId + ", exerciseName=" + exerciseName + "]";
+    public void setWorkouts(List<Workout> workouts) {
+        this.workouts = workouts;
     }
+
+    // public void add
+
+    // public Exercise() {}
 
 }

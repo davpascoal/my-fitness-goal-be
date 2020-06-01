@@ -24,10 +24,13 @@ public class WorkoutController {
         return service.getAll();
     }
 
-    @PostMapping("/workout")
-    @ResponseBody
-    public Workout saveWorkout(@RequestBody Workout newWorkout) {
-        return service.save(newWorkout);
-    }
+    // @PostMapping("/workout")
+    // @ResponseBody
+    // public Workout saveWorkout(@RequestBody Workout newWorkout) {
+    //     return service.save(newWorkout);
+    // }
+
+    // @GetMapping("/workout/?/exerciselist")
+    // public List<>
 
 }

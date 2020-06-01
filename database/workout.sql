@@ -30,7 +30,17 @@ DROP TABLE IF EXISTS `workout_exercises`;
 CREATE TABLE `workout_exercises` (
     `workout_id` int(11) NOT NULL,
     `exercise_id` int(11) NOT NULL,
-    PRIMARY KEY(`workout_id`, `exercise_id`)
-)
+    PRIMARY KEY(`workout_id`, `exercise_id`),
+    
+    KEY `FK_WORKOUT_idx`, (`workout_id`),
+
+    CONSTRAINT `FK_WORKOUT` FOREIGN KEY (`workout_id`),
+    REFERENCES `workout` (`workout_id`)
+    ON DELETE NO ACTION ON UPDATE NO ACTION,
+
+    CONSTRAINT `FK_EXERCISE` FOREIGN KEY (`exercise_id`),
+    REFERENCES `exercise` (`exercise_id`)
+    ON DELETE NO ACTION ON UPDATE NO ACTION,
+) ENGINE=InnoDB DEFAULT CHARSET=l
 
 SET FOREIGN_KEY_CHECKS = 1;

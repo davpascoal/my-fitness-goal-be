@@ -1,10 +1,12 @@
 package com.myfitnessgoal.myfitnessgoal.entity;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,11 +22,14 @@ public class Workout {
     @Column(name = "workout_id")
     private int workoutId;
 
-    @ManyToMany
-    @JoinTable(name = "workout_exercise",
-                joinColumns = { @JoinColumn(name = "workout_id")},
-                inverseJoinColumns = { @JoinColumn(name = "exercise_id") })
-    private Set<Exercise> exercises = new HashSet<>();
+    @ManyToMany (
+        fetch = FetchType.LAZY,
+        cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinTable(
+        name = "workout_exercise",
+        joinColumns = { @JoinColumn(name = "workout_id")},
+        inverseJoinColumns = { @JoinColumn(name = "exercise_id") })
+    private List<Exercise> exercises;
 
     @Column(name="title")
     private String title;
@@ -67,19 +72,29 @@ public class Workout {
     public void setBgImg(String bgImg) {
         this.bgImg = bgImg;
     }
-
-    public Workout() {}
-
-    public Workout(String title, String description, String bgImg) {
-        this.title = title;
-        this.description = description;
-        this.bgImg = bgImg;
+    
+    public List<Exercise> getExercises() {
+        return exercises;
     }
+    
+    public void setExercises(List<Exercise> exercises) {
+        this.exercises = exercises;
+    }
+
+    public void addExercise(Exercise exercise) {
+        if (exercises == null) {
+            exercises = new ArrayList<>();
+        }
+
+        exercises.add(exercise);
+    }
+    
+    // public Workout() {}
 
     @Override
     public String toString() {
-        return "Workout [bgImg=" + bgImg + ", description=" + description + ", title=" + title + ", workoutId="
-                + workoutId + "]";
+        return "Workout [bgImg=" + bgImg + ", description=" + description + ", exercises=" + exercises + ", title="
+                + title + ", workoutId=" + workoutId + "]";
     }
 
 }
