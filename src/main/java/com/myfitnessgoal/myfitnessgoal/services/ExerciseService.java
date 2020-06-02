@@ -21,16 +21,7 @@ public class ExerciseService {
 
     public List<Exercise> getAll() {
         final List<Exercise> exercises = new ArrayList<>();
-        
-        for (Exercise exercise : repository.findAll()) {
-            System.out.println("???" + exercise.getDuration().toMinutes());
-            exercises.add(exercise);
-        }
-        
-        // repository.findAll().forEach(exercise -> exercises.add(exercise));
-        
-        
-        
+        repository.findAll().forEach(exercise -> exercises.add(exercise));
         return exercises;
     }
 

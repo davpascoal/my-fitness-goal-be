@@ -13,23 +13,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
+@Table(name = "workout")
 public class Workout {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "workout_id")
     private int workoutId;
-
-    @ManyToMany (
-        fetch = FetchType.LAZY,
-        cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinTable(
-        name = "workout_exercise",
-        joinColumns = { @JoinColumn(name = "workout_id")},
-        inverseJoinColumns = { @JoinColumn(name = "exercise_id") })
-    private List<Exercise> exercises;
 
     @Column(name="title")
     private String title;
@@ -40,6 +35,15 @@ public class Workout {
     @Column(name="bg_img")
     private String bgImg;
 
+    @ManyToMany (
+        fetch = FetchType.LAZY,
+        cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinTable(
+        name = "workout_exercise",
+        joinColumns = { @JoinColumn(name = "workout_id")},
+        inverseJoinColumns = { @JoinColumn(name = "exercise_id") })
+    @JsonManagedReference
+    private List<Exercise> exercises;
 
     public int getWorkoutId() {
         return workoutId;
@@ -88,8 +92,6 @@ public class Workout {
 
         exercises.add(exercise);
     }
-    
-    // public Workout() {}
 
     @Override
     public String toString() {
