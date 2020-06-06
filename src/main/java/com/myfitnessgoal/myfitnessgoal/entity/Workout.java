@@ -15,8 +15,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 @Entity
 @Table(name = "workout")
 public class Workout {
@@ -42,7 +40,6 @@ public class Workout {
         name = "workout_exercise",
         joinColumns = { @JoinColumn(name = "workout_id")},
         inverseJoinColumns = { @JoinColumn(name = "exercise_id") })
-    @JsonManagedReference
     private List<Exercise> exercises;
 
     public int getWorkoutId() {

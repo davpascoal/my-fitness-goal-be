@@ -14,7 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Exercise {
@@ -37,7 +37,7 @@ public class Exercise {
         name = "workout_exercise",
         joinColumns = { @JoinColumn(name = "exercise_id") },
         inverseJoinColumns = { @JoinColumn(name = "workout_id") })
-    @JsonBackReference
+    @JsonIgnore
     private List<Workout> workouts;
 
     public int getExerciseId() {
