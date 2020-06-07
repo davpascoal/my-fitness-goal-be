@@ -3,41 +3,46 @@ package com.myfitnessgoal.myfitnessgoal.services;
 import java.util.List;
 import java.util.Optional;
 
-import com.myfitnessgoal.myfitnessgoal.dao.WorkoutDAOImpl;
 import com.myfitnessgoal.myfitnessgoal.entity.Workout;
+import com.myfitnessgoal.myfitnessgoal.repositories.WorkoutRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class WorkoutServiceImpl implements WorkoutService {
     
+    private WorkoutRepository workoutRepository;
+
     @Autowired
-    WorkoutDAOImpl workoutDAO;
+    public WorkoutServiceImpl(WorkoutRepository theWorkoutRepository) {
+        workoutRepository = theWorkoutRepository;
+    }
 
     @Override
-    @Transactional
     public List<Workout> findAll() {
-        return workoutDAO.findAll();
+        return workoutRepository.findAll();
     }
     
     @Override
-    @Transactional
-    public Optional<Workout> findById(int id) {
-        return workoutDAO.findById(id);
+    public Workout findById(int id) {
+        Optional<Workout> result = workoutRepository.findById(id);
+
+        if (!result.isPresent()) {
+            throw new RuntimeException("Did not find workout id - " + id);
+        }
+
+        return result.get();
     }
     
     @Override
-    @Transactional
     public void save(Workout workout) {
-        workoutDAO.save(workout);
+        workoutRepository.save(workout);
     }
     
     @Override
-    @Transactional
     public void deleteById(int id) {
-        workoutDAO.deleteById(id);
+        workoutRepository.deleteById(id);
     }
 
 }

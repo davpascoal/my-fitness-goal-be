@@ -30,8 +30,14 @@ public class WorkoutController {
     }
 
     @GetMapping("/{workoutId}")
-    public Optional<Workout> getWorkout(@PathVariable int workoutId) {
-        return service.findById(workoutId);
+    public Workout getWorkout(@PathVariable int workoutId) {
+        Workout workout = service.findById(workoutId);
+
+        if (workout == null) {
+            throw new RuntimeException("Workout id not found - " + workoutId);
+        }
+
+        return workout;
     }
 
     @PostMapping("")
@@ -49,14 +55,14 @@ public class WorkoutController {
 
     @DeleteMapping("/{id}")
     public String deleteWorkout(@PathVariable int id) {
-        Optional<Workout> workout = service.findById(id);
+        Workout workout = service.findById(id);
 
-        if (workout.isPresent()) {
-            service.deleteById(id);
-            return "Deleted Workout id - " + id;
-        } else {
+        if (workout == null) {
             throw new RuntimeException("Workout id not found - " + id);
         }
+
+        service.deleteById(id);
+        return "Deleted Workout id - " + id;
     }
 
 }
