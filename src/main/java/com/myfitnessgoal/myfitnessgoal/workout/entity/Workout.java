@@ -1,4 +1,4 @@
-package com.myfitnessgoal.myfitnessgoal.entity;
+package com.myfitnessgoal.myfitnessgoal.workout.entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.myfitnessgoal.myfitnessgoal.exercise.entity.Exercise;
+import com.myfitnessgoal.myfitnessgoal.user.model.User;
 
 @Entity
 @Table(name = "workout")
@@ -22,7 +28,7 @@ public class Workout {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "workout_id")
-    private int workoutId;
+    private Long workoutId;
 
     @Column(name="title")
     private String title;
@@ -42,11 +48,19 @@ public class Workout {
         inverseJoinColumns = { @JoinColumn(name = "exercise_id") })
     private List<Exercise> exercises;
 
-    public int getWorkoutId() {
+    @ManyToOne(
+        fetch = FetchType.LAZY,
+        cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}
+    )
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
+    private User user;
+
+    public Long getWorkoutId() {
         return workoutId;
     }
 
-    public void setWorkoutId(int workoutId) {
+    public void setWorkoutId(Long workoutId) {
         this.workoutId = workoutId;
     }
 
@@ -90,10 +104,12 @@ public class Workout {
         exercises.add(exercise);
     }
 
-    @Override
-    public String toString() {
-        return "Workout [bgImg=" + bgImg + ", description=" + description + ", exercises=" + exercises + ", title="
-                + title + ", workoutId=" + workoutId + "]";
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
 }

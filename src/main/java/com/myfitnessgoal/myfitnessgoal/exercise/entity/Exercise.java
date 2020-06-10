@@ -1,4 +1,4 @@
-package com.myfitnessgoal.myfitnessgoal.entity;
+package com.myfitnessgoal.myfitnessgoal.exercise.entity;
 
 import java.time.Duration;
 import java.util.List;
@@ -15,6 +15,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.myfitnessgoal.myfitnessgoal.workout.entity.Workout;
 
 @Entity
 public class Exercise {
@@ -22,7 +23,7 @@ public class Exercise {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "exercise_id")
-    private int exerciseId;
+    private Long exerciseId;
     
     @Column(name = "exercise_name")
     private String exerciseName;
@@ -40,11 +41,11 @@ public class Exercise {
     @JsonIgnore
     private List<Workout> workouts;
 
-    public int getExerciseId() {
+    public Long getExerciseId() {
         return exerciseId;
     }
 
-    public void setExerciseId(int exerciseId) {
+    public void setExerciseId(Long exerciseId) {
         this.exerciseId = exerciseId;
     }
 

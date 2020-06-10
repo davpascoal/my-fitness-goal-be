@@ -1,6 +1,6 @@
-package com.myfitnessgoal.myfitnessgoal.repositories;
+package com.myfitnessgoal.myfitnessgoal.exercise.repository;
 
-import com.myfitnessgoal.myfitnessgoal.entity.Exercise;
+import com.myfitnessgoal.myfitnessgoal.exercise.entity.Exercise;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
