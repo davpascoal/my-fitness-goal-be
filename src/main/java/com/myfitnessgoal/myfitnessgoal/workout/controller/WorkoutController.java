@@ -1,7 +1,4 @@
 package com.myfitnessgoal.myfitnessgoal.workout.controller;
-
-import java.util.List;
-
 import com.myfitnessgoal.myfitnessgoal.workout.entity.Workout;
 import com.myfitnessgoal.myfitnessgoal.workout.service.WorkoutService;
 
@@ -22,7 +19,7 @@ public class WorkoutController {
     @Autowired
     WorkoutService service;
 
-    @GetMapping("")
+    @GetMapping
     public Iterable<Workout> getWorkouts() {
         return service.findAll();
     }
@@ -38,14 +35,14 @@ public class WorkoutController {
         return workout;
     }
 
-    @PostMapping("")
+    @PostMapping
     public Workout saveWorkout(@RequestBody Workout workout) {
         workout.setWorkoutId((long) 0);
         service.save(workout);
         return workout;
     }
 
-    @PutMapping("")
+    @PutMapping
     public Workout updatedWorkout(@RequestBody Workout workout) {
         service.save(workout);
         return workout;

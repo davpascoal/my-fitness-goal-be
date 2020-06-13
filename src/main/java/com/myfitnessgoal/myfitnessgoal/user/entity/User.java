@@ -1,4 +1,4 @@
-package com.myfitnessgoal.myfitnessgoal.user.model;
+package com.myfitnessgoal.myfitnessgoal.user.entity;
 
 import java.util.List;
 
@@ -9,10 +9,14 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.myfitnessgoal.myfitnessgoal.role.entity.Role;
 import com.myfitnessgoal.myfitnessgoal.workout.entity.Workout;
 
 
@@ -33,6 +37,13 @@ public class User {
 
     @Column(name = "last_name")
     private String lastName;
+
+    @ManyToOne(
+        cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}
+    )
+    @JoinColumn(name = "role_id")
+    @JsonBackReference
+    private Role role;
 
     @OneToMany(
         mappedBy = "user",
@@ -72,11 +83,25 @@ public class User {
     public void setWorkouts(List<Workout> workouts) {
         this.workouts = workouts;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
     
     // @OneToOne(cascade = CascadeType.ALL)
     // @JoinColumn(name = "statistics_id")
     // private Statistics statistics;
 
-    
-    
 }

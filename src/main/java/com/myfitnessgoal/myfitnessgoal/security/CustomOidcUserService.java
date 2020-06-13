@@ -2,14 +2,15 @@ package com.myfitnessgoal.myfitnessgoal.security;
 
 import java.util.Optional;
 
-import com.myfitnessgoal.myfitnessgoal.user.model.User;
+import com.myfitnessgoal.myfitnessgoal.role.entity.Role;
+import com.myfitnessgoal.myfitnessgoal.role.repository.RoleRepository;
+import com.myfitnessgoal.myfitnessgoal.user.entity.User;
 import com.myfitnessgoal.myfitnessgoal.user.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
-import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +18,13 @@ import org.springframework.stereotype.Service;
 public class CustomOidcUserService extends OidcUserService {
 
     @Autowired
-    UserRepository UserRepository;
+    UserRepository userRepository;
+
+    @Autowired
+    RoleRepository roleRepository;
 
     @Override
-    public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
+    public OidcUser loadUser(OidcUserRequest userRequest) {
         OidcUser oidcUser = super.loadUser(userRequest);
 
         try {
@@ -31,17 +35,23 @@ public class CustomOidcUserService extends OidcUserService {
     }
 
     private OidcUser processOidcUser(OidcUserRequest userRequest, OidcUser oidcUser) {
-        GoogleUserInfo googleUserInfo = new GoogleUserInfo(oidcUser.getAttributes());
+        GoogleUserInfo googleUserInfo = new GoogleUserInfo(oidcUser);
 
-        Optional<User> userOptional = UserRepository.findByEmail(googleUserInfo.getEmail());
-        System.out.println("userOptional: " + userOptional);
+        Optional<User> userOptional = userRepository.findByEmail(googleUserInfo.getEmail());
+
+        // If the user does not exist we want to persist a new user
         if (!userOptional.isPresent()) {
             User user = new User();
             user.setEmail(googleUserInfo.getEmail());
-            user.setFirstName(googleUserInfo.getName());
-            // Set more data if needed
+            user.setFirstName(googleUserInfo.getFirstName());
+            user.setLastName(googleUserInfo.getLastName());
 
-            UserRepository.save(user);
+            // Optional<Role> roleOptional = roleRepository.findByType(googleUserInfo.getRole());
+            // if (roleOptional.isPresent()) {
+            //     user.setRole(roleOptional.get());
+            // }
+
+            userRepository.save(user);
         }
 
         return oidcUser;

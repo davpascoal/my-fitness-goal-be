@@ -17,9 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.myfitnessgoal.myfitnessgoal.exercise.entity.Exercise;
-import com.myfitnessgoal.myfitnessgoal.user.model.User;
+import com.myfitnessgoal.myfitnessgoal.user.entity.User;
 
 @Entity
 @Table(name = "workout")
